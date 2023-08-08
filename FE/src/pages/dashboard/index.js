@@ -31,7 +31,20 @@ export default function Footer() {
 		return <ApexChart countReceived={countReceived} countApplied={countApplied} />;
 	};
 
-	const [data, setData] = useState(ActiveJobData.jobData);
+  useEffect(() => {
+    // Fetch hotel data from the API
+    fetch("https://practical-task-h82v.onrender.com/jobs/jobdata")
+      .then((response) => response.json())
+      .then((data) => {
+        setData(data); // Set the hotel data
+        console.log(data); // Log the name of the first hotel in the data
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
+  }, []);
+
+	const [data, setData] = useState([]);
 	const [sortCriteria, setSortCriteria] = useState('');
 	const sortData = (array, criteria) => {
 		const sortedArray = [...array];
