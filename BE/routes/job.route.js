@@ -9,11 +9,11 @@ const jobRoute = express.Router();
 
 
 // ---------------- GET DATA OF JOB ROUTE ---------------- //
-jobRoute.get('/', async (request, response) => {
-    const query = request.query;
+jobRoute.get('/jobdata', async (request, response) => {
+    const query = request.body;
 
     try {
-        const job_data = await JobModel.find(query);
+        const job_data = await JobModel.find({});
         response.send(job_data);
     } catch (error) {
         response.send({
@@ -30,7 +30,7 @@ jobRoute.post('/addjobs', async (request, response) => {
     // console.log('data: ',data);
 
     try {
-        if (name && location && posted && status && applied && jobViews && daysLeft && dateFormat) {
+        // if (name && location && posted && status && applied && jobViews && daysLeft && dateFormat) {
             const add_data = new JobModel({
                 name,
                 location,
@@ -43,15 +43,16 @@ jobRoute.post('/addjobs', async (request, response) => {
                 dateFormat
             });
             await add_data.save();
-            response.send({
-                'message': 'job data successfully added',
-                'data': data
-            });
-        } else {
-            response.send({
-                'message': 'All fields are required'
-            })
-        }
+            response.json(add_data)
+            // response.send({
+            //     'message': 'job data successfully added',
+            //     'data': data
+            // });
+        // } else {
+        //     response.send({
+        //         'message': 'All fields are required'
+        //     })
+        // }
     } catch (error) {
         response.send({
             'message': 'something went wrong',
